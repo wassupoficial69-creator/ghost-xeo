@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[5:19 p. m., 17/10/2026] wasshu: <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,23 @@
           }
         }
       }
+…
+[5:23 p. m., 17/10/2026] wasshu: <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHOST.xeo - Panel de Control Interactivo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+        }
+      }
     }
   </script>
 </head>
@@ -25,7 +42,7 @@
   <!-- Sidebar / Menú Lateral -->
   <aside class="w-72 bg-white border-r border-gray-200 min-h-screen flex flex-col p-5 shadow-sm shrink-0">
     <!-- Logo -->
-    <div class="flex items-center gap-3 px-2 mb-8">
+    <div class="flex items-center gap-3 px-2 mb-8 cursor-pointer" onclick="switchTab('inicio')">
       <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
         <i class="fa-solid fa-ghost text-xl"></i>
       </div>
@@ -35,41 +52,41 @@
     <!-- Sección PERFIL -->
     <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">PERFIL</div>
     <nav class="space-y-1 mb-6">
-      <button onclick="switchTab('inicio')" id="btn-inicio" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 text-sm font-medium transition">
+      <button type="button" onclick="switchTab('inicio')" id="btn-inicio" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-100 text-sm font-medium transition">
         <i class="fa-solid fa-house w-5 text-gray-400"></i> Inicio
       </button>
       
-      <button onclick="recargarSaldo()" class="w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="abrirModalRecarga()" class="w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-coins w-5 text-amber-500"></i> Recargar
         </div>
         <span id="saldo-badge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">S/ 0.00</span>
       </button>
 
-      <button onclick="switchTab('perfil')" id="btn-perfil" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="switchTab('perfil')" id="btn-perfil" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <i class="fa-solid fa-user w-5 text-gray-400"></i> Perfil
       </button>
 
-      <button onclick="switchTab('reniec')" id="btn-reniec" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-indigo-600 bg-indigo-50 font-semibold rounded-xl text-sm transition">
+      <button type="button" onclick="switchTab('reniec')" id="btn-reniec" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-indigo-600 bg-indigo-50 font-semibold rounded-xl text-sm transition">
         <i class="fa-solid fa-address-card w-5"></i> Reniec Online
       </button>
 
-      <button onclick="switchTab('sentinel')" id="btn-sentinel" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="switchTab('sentinel')" id="btn-sentinel" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <i class="fa-solid fa-shield-halved w-5 text-gray-400"></i> Sentinel
       </button>
 
-      <button onclick="switchTab('consumos')" id="btn-consumos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="switchTab('consumos')" id="btn-consumos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <i class="fa-solid fa-layer-group w-5 text-gray-400"></i> Consumos
       </button>
     </nav>
 
-    <!-- Sección MENÚ -->
+    <!-- Sección MENÚ EXTRA -->
     <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">MÓDULOS EXTRA</div>
     <nav class="space-y-1">
-      <button onclick="switchTab('doxing')" id="btn-doxing" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="switchTab('doxing')" id="btn-doxing" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <i class="fa-solid fa-cubes w-5 text-gray-400"></i> DOXING
       </button>
-      <button onclick="switchTab('telefonos')" id="btn-telefonos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+      <button type="button" onclick="switchTab('telefonos')" id="btn-telefonos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
         <i class="fa-solid fa-phone w-5 text-gray-400"></i> Teléfonos
       </button>
     </nav>
@@ -81,13 +98,14 @@
     <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
       <div class="flex items-center gap-3">
         <h1 id="page-title" class="text-xl font-bold text-gray-800 uppercase">RENIEC - ONLINE</h1>
-        <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+        <span class="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5">
           <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Servidor Activo
         </span>
       </div>
-      <div class="relative w-80">
-        <input type="text" placeholder="Buscar en la plataforma..." class="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="abrirModalRecarga()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-wallet"></i> Recargar Saldo
+        </button>
       </div>
     </header>
 
@@ -97,21 +115,21 @@
         <label class="block text-sm font-semibold text-gray-700 mb-2">Consulta por DNI</label>
         <div class="flex gap-3 mb-4">
           <input type="text" id="dni-input" maxlength="8" placeholder="Ingrese número de DNI (Ej. 72839401)..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-          <button onclick="buscarDNI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-indigo-100">
+          <button type="button" onclick="buscarDNI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-indigo-100">
             <i class="fa-solid fa-magnifying-glass"></i> Consultar
           </button>
         </div>
         
         <div class="flex items-center gap-4 text-xs text-gray-500">
-          <span class="flex items-center gap-1"><i class="fa-solid fa-bolt text-amber-500"></i> Costo: S/ 1.00 por consulta</span>
-          <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> Tiempo promedio: 0.8s</span>
+          <span class="flex items-center gap-1"><i class="fa-solid fa-bolt text-amber-500"></i> Servidor API V2 Conectado</span>
+          <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> Respuesta inmediata</span>
         </div>
       </div>
 
       <!-- Loader (Cargando) -->
       <div id="loader" class="hidden bg-white p-8 rounded-2xl border border-gray-200 shadow-sm max-w-3xl text-center">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-600 mb-3"></i>
-        <p class="text-sm font-semibold text-gray-600">Consultando base de datos RENIEC en tiempo real...</p>
+        <p class="text-sm font-semibold text-gray-600">Procesando consulta en la base de datos RENIEC...</p>
       </div>
 
       <!-- Resultado DNI -->
@@ -124,15 +142,13 @@
         </div>
 
         <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Foto simulación -->
           <div class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl border border-gray-100">
             <div class="w-32 h-40 bg-gray-200 rounded-lg flex items-center justify-center border border-gray-300 text-gray-400 mb-2 overflow-hidden">
               <i class="fa-solid fa-user text-6xl"></i>
             </div>
-            <span class="text-xs text-gray-500 font-medium">Foto Oficial RENIEC</span>
+            <span class="text-xs text-gray-500 font-medium">Foto Registro Oficial</span>
           </div>
 
-          <!-- Datos -->
           <div class="md:col-span-2 space-y-3 text-sm">
             <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
               <span class="text-gray-500 font-medium">DNI:</span>
@@ -152,7 +168,7 @@
             </div>
             <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
               <span class="text-gray-500 font-medium">Fecha Nacimiento:</span>
-              <span class="font-semibold text-gray-800">14/08/1995 (29 años)</span>
+              <span class="font-semibold text-gray-800">14/08/1995 (31 años)</span>
             </div>
             <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
               <span class="text-gray-500 font-medium">Estado Civil:</span>
@@ -173,17 +189,17 @@
         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
           <span class="text-xs text-gray-400 font-bold uppercase">Saldo Disponible</span>
           <h2 id="card-saldo" class="text-3xl font-extrabold text-indigo-600 mt-2">S/ 0.00</h2>
-          <button onclick="recargarSaldo()" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-2 rounded-xl text-xs transition">Recargar Saldo</button>
+          <button type="button" onclick="abrirModalRecarga()" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-2.5 rounded-xl text-xs transition">Recargar Saldo</button>
         </div>
         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
           <span class="text-xs text-gray-400 font-bold uppercase">Consultas Realizadas</span>
           <h2 id="card-consultas" class="text-3xl font-extrabold text-gray-800 mt-2">0</h2>
-          <span class="text-xs text-gray-500 mt-2 block">Hoy: 0 consultas</span>
+          <span class="text-xs text-gray-500 mt-2 block">Consultas en esta sesión</span>
         </div>
         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-          <span class="text-xs text-gray-400 font-bold uppercase">Estado de Licencia</span>
+          <span class="text-xs text-gray-400 font-bold uppercase">Rango de Usuario</span>
           <h2 class="text-3xl font-extrabold text-emerald-600 mt-2">VIP</h2>
-          <span class="text-xs text-gray-500 mt-2 block">Acceso Ilimitado a Módulos</span>
+          <span class="text-xs text-gray-500 mt-2 block">Acceso Total a la Plataforma</span>
         </div>
       </div>
     </section>
@@ -200,35 +216,83 @@
         </div>
         <div class="space-y-2 text-sm">
           <p><strong>Rol:</strong> Propietario / Admin</p>
-          <p><strong>Miembro desde:</strong> Octubre 2026</p>
-          <p><strong>API Key:</strong> <code class="bg-gray-100 px-2 py-1 rounded text-xs">ghost_live_998348271</code></p>
+          <p><strong>Estado:</strong> <span class="text-green-600 font-bold">Activo</span></p>
+          <p><strong>Token ID:</strong> <code class="bg-gray-100 px-2 py-1 rounded text-xs">ghost_xeo_live_2026</code></p>
         </div>
       </div>
     </section>
 
-    <!-- OTROS MÓDULOS -->
-    <section id="tab-sentinel" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo Sentinel en línea.</div></section>
-    <section id="tab-consumos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Historial de consumos vacío.</div></section>
-    <section id="tab-doxing" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo DOXING disponible para miembros VIP.</div></section>
-    <section id="tab-telefonos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Consulta de titularidad telefónica en mantenimiento.</div></section>
+    <!-- PESTAÑAS SECUNDARIAS -->
+    <section id="tab-sentinel" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">Módulo Sentinel activado y listo para consultas financieras.</div></section>
+    <section id="tab-consumos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">Historial de consumos registrado correctamente.</div></section>
+    <section id="tab-doxing" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">Módulo DOXING habilitado para usuario VIP.</div></section>
+    <section id="tab-telefonos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">Búsqueda de líneas telefónicas por titular activa.</div></section>
   </main>
 
+  <!-- MODAL FLOTANTE DE RECARGA DE SALDO -->
+  <div id="modal-recarga" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 transform transition-all">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b">
+        <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+          <i class="fa-solid fa-coins text-amber-500"></i> Recargar Saldo
+        </h3>
+        <button type="button" onclick="cerrarModalRecarga()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+      </div>
+      
+      <p class="text-xs text-gray-500 mb-4">Seleccione un monto rápido o ingrese una cantidad personalizada para abonar a su cuenta:</p>
+      
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <button type="button" onclick="seleccionarMonto(10)" class="monto-btn bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 font-bold py-2.5 rounded-xl border border-gray-200 text-sm transition">S/ 10.00</button>
+        <button type="button" onclick="seleccionarMonto(20)" class="monto-btn bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 font-bold py-2.5 rounded-xl border border-gray-200 text-sm transition">S/ 20.00</button>
+        <button type="button" onclick="seleccionarMonto(50)" class="monto-btn bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 font-bold py-2.5 rounded-xl border border-gray-200 text-sm transition">S/ 50.00</button>
+      </div>
+
+      <div class="mb-5">
+        <label class="block text-xs font-semibold text-gray-600 mb-1">Monto personalizado (S/)</label>
+        <input type="number" id="input-monto-custom" placeholder="Ejemplo: 35" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold">
+      </div>
+
+      <div class="flex gap-3">
+        <button type="button" onclick="cerrarModalRecarga()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 rounded-xl text-xs transition">Cancelar</button>
+        <button type="button" onclick="confirmarRecarga()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md shadow-indigo-100">Confirmar Recarga</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    let saldo = 0.00;
+    let saldoActual = 0.00;
     let consultasCount = 0;
 
-    function recargarSaldo() {
-      const monto = prompt("Ingrese el monto a recargar en Soles (S/):", "10");
-      if (monto !== null && !isNaN(monto) && parseFloat(monto) > 0) {
-        saldo += parseFloat(monto);
+    function abrirModalRecarga() {
+      document.getElementById('modal-recarga').classList.remove('hidden');
+    }
+
+    function cerrarModalRecarga() {
+      document.getElementById('modal-recarga').classList.add('hidden');
+      document.getElementById('input-monto-custom').value = '';
+    }
+
+    function seleccionarMonto(monto) {
+      document.getElementById('input-monto-custom').value = monto;
+    }
+
+    function confirmarRecarga() {
+      const val = document.getElementById('input-monto-custom').value;
+      const monto = parseFloat(val);
+
+      if (!isNaN(monto) && monto > 0) {
+        saldoActual += monto;
         actualizarUI();
-        alert(¡Recarga exitosa! Se han añadido S/ ${parseFloat(monto).toFixed(2)} a tu cuenta.);
+        cerrarModalRecarga();
+      } else {
+        alert("Por favor ingrese o seleccione un monto válido.");
       }
     }
 
     function actualizarUI() {
-      document.getElementById('saldo-badge').innerText = S/ ${saldo.toFixed(2)};
-      document.getElementById('card-saldo').innerText = S/ ${saldo.toFixed(2)};
+      const saldoFormatted = S/ ${saldoActual.toFixed(2)};
+      document.getElementById('saldo-badge').innerText = saldoFormatted;
+      document.getElementById('card-saldo').innerText = saldoFormatted;
       document.getElementById('card-consultas').innerText = consultasCount;
     }
 
@@ -237,21 +301,13 @@
       const dni = input.value.trim();
 
       if (dni.length !== 8 || isNaN(dni)) {
-        alert("Por favor ingrese un número de DNI válido de 8 dígitos.");
+        alert("Por favor ingrese un DNI válido de exactamente 8 dígitos.");
         return;
       }
 
-      if (saldo < 1.00) {
-        alert("Saldo insuficiente (Costo S/ 1.00). Haz clic en 'Recargar' para agregar crédito.");
-        return;
-      }
-
-      // Descontar saldo y aumentar consultas
-      saldo -= 1.00;
       consultasCount++;
       actualizarUI();
 
-      // Mostrar loader
       document.getElementById('resultado-dni').classList.add('hidden');
       document.getElementById('loader').classList.remove('hidden');
 
@@ -259,21 +315,19 @@
         document.getElementById('loader').classList.add('hidden');
         document.getElementById('res-dni').innerText = dni;
         document.getElementById('resultado-dni').classList.remove('hidden');
-      }, 800);
+      }, 600);
     }
 
     function switchTab(tabId) {
-      // Ocultar todas las pestañas
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      
-      // Mostrar pestaña seleccionada
-      const target = document.getElementById(tab-${tabId});
-      if (target) target.classList.remove('hidden');
 
-      // Actualizar título de cabecera
+      const target = document.getElementById(tab-${tabId});
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
       document.getElementById('page-title').innerText = tabId.toUpperCase().replace('-', ' ');
 
-      // Estilos de botones
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('text-indigo-600', 'bg-indigo-50', 'font-semibold');
         btn.classList.add('text-gray-600', 'font-medium');
