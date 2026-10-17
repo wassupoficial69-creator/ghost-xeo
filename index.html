@@ -1,25 +1,4 @@
-[5:34 p. m., 17/10/2026] wasshu: <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHOST.xeo - Sistema de Gestión</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } }
-      }
-    }
-  </script>
-</head>
-<body class="bg-[#f4f3f8] text-gray-800 font-sans min-h-screen">
-
-  <!-- PANTALLA 1: REGISTRO DE USUARIO (Muestra primero) -->
-  …
-[5:37 p. m., 17/10/2026] wasshu: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -65,8 +44,12 @@
           <input type="password" id="reg-pass" placeholder="••••••••" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        <button type="button" onclick="iniciarSesion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-indigo-200 mt-2">
+        <button type="button" id="btn-entrar" onclick="iniciarSesion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-indigo-200 mt-2">
           Crear Cuenta y Entrar
+        </button>
+
+        <button type="button" onclick="entrarDirecto()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl text-xs transition">
+          Entrar Modo Demo / Omitir
         </button>
       </div>
     </div>
@@ -122,7 +105,7 @@
       <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
         <h1 id="titulo-seccion" class="text-xl font-bold text-gray-800 uppercase">INICIO</h1>
         <div class="flex items-center gap-4">
-          <span class="text-xs font-semibold text-gray-500">Usuario: <strong id="header-username" class="text-indigo-600">-</strong></span>
+          <span class="text-xs font-semibold text-gray-500">Usuario: <strong id="header-username" class="text-indigo-600">Usuario_Demo</strong></span>
           <button type="button" onclick="navegar('recargar')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow-sm">
             Saldo: <span id="header-saldo">S/ 0.00</span>
           </button>
@@ -178,8 +161,8 @@
             <i class="fa-solid fa-user-gear text-indigo-600"></i> Datos de la Cuenta
           </h2>
           <div class="space-y-3 text-sm">
-            <p><strong>Nombre:</strong> <span id="perf-nombre">-</span></p>
-            <p><strong>Usuario:</strong> <span id="perf-user">-</span></p>
+            <p><strong>Nombre:</strong> <span id="perf-nombre">Usuario Registrado</span></p>
+            <p><strong>Usuario:</strong> <span id="perf-user">Usuario_Demo</span></p>
             <p><strong>Estado:</strong> <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Activo</span></p>
           </div>
         </div>
@@ -245,20 +228,25 @@
     let consultasCount = 0;
 
     function iniciarSesion() {
-      const nombre = document.getElementById('reg-nombre').value.trim();
-      const user = document.getElementById('reg-user').value.trim();
+      const nombreInput = document.getElementById('reg-nombre').value.trim();
+      const userInput = document.getElementById('reg-user').value.trim();
 
-      if (!nombre || !user) {
-        alert("Por favor completa los campos de Nombre y Usuario.");
-        return;
-      }
+      const nombre = nombreInput || "Usuario Registrado";
+      const user = userInput || "Admin_Ghost";
 
       document.getElementById('header-username').innerText = user;
       document.getElementById('perf-nombre').innerText = nombre;
       document.getElementById('perf-user').innerText = user;
 
-      document.getElementById('pantalla-registro').style.display = 'none';
-      document.getElementById('panel-principal').classList.remove('hidden');
+      entrarDirecto();
+    }
+
+    function entrarDirecto() {
+      const reg = document.getElementById('pantalla-registro');
+      const panel = document.getElementById('panel-principal');
+
+      if (reg) reg.setAttribute('style', 'display: none !important');
+      if (panel) panel.classList.remove('hidden');
     }
 
     function navegar(idVista) {
