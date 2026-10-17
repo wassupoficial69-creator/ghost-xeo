@@ -3,317 +3,366 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHOST.xeo - Panel Interactivo</title>
+  <title>GHOST.xeo - Panel de Control</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
-        extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } }
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: { fantom: { bg: '#f6f5f9', card: '#ffffff', border: '#e8e6ed', accent: '#6366f1' } }
+        }
       }
     }
   </script>
 </head>
-<body class="bg-[#f4f3f8] text-gray-800 font-sans min-h-screen">
+<body class="bg-[#f6f5f9] text-gray-800 font-sans min-h-screen">
 
-  <!-- PANTALLA 1: REGISTRO / LOGIN -->
-  <div id="pantalla-registro" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4">
+  <!-- PANTALLA 1: REGISTRO / LOGIN INICIAL -->
+  <div id="screen-login" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-100">
       <div class="flex items-center gap-3 mb-6 justify-center">
         <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-300">
           <i class="fa-solid fa-ghost text-2xl"></i>
         </div>
-        <span class="font-extrabold text-2xl tracking-tight text-gray-900">GHOST<span class="text-indigo-600">.xeo</span></span>
+        <span class="font-extrabold text-2xl tracking-widest text-gray-900 uppercase">GHOST<span class="text-indigo-600">.xeo</span></span>
       </div>
 
-      <h2 class="text-xl font-bold text-gray-800 text-center mb-1">Crear Cuenta de Usuario</h2>
-      <p class="text-xs text-gray-500 text-center mb-6">Completa los datos para ingresar al panel</p>
+      <h2 class="text-xl font-bold text-gray-800 text-center mb-1">Registro de Usuario</h2>
+      <p class="text-xs text-gray-500 text-center mb-6">Crea tu cuenta para acceder a todos los módulos</p>
 
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nombre Completo</label>
+          <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nombre Completo</label>
           <input type="text" id="reg-nombre" placeholder="Ej. Carlos Mendoza" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Usuario</label>
+          <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nombre de Usuario</label>
           <input type="text" id="reg-user" placeholder="Ej. cmendoza" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Contraseña</label>
+          <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Contraseña</label>
           <input type="password" id="reg-pass" placeholder="••••••••" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
-        <button type="button" id="btn-entrar" onclick="iniciarSesion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-indigo-200 mt-2">
+        <button type="button" onclick="registrarYEntrar()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-indigo-200 mt-2">
           Crear Cuenta y Entrar
         </button>
 
-        <button type="button" onclick="entrarDirecto()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl text-xs transition">
-          Entrar Modo Demo / Omitir
+        <button type="button" onclick="entrarDirectoDemo()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl text-xs transition">
+          Entrar como Invitado (Demo)
         </button>
       </div>
     </div>
   </div>
 
-  <!-- PANTALLA 2: PANEL PRINCIPAL -->
-  <div id="panel-principal" class="hidden min-h-screen flex">
+  <!-- PANTALLA 2: PANEL DE CONTROL MULTIMÓDULO -->
+  <div id="screen-dashboard" class="hidden min-h-screen flex">
     
-    <!-- Sidebar -->
+    <!-- Sidebar basada en la imagen GHOST.xeo -->
     <aside class="w-72 bg-white border-r border-gray-200 min-h-screen flex flex-col p-5 shadow-sm shrink-0">
-      <div class="flex items-center gap-3 px-2 mb-8 cursor-pointer" onclick="navegar('inicio')">
-        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
-          <i class="fa-solid fa-ghost text-xl"></i>
+      <!-- Logo Header -->
+      <div class="flex items-center gap-3 px-2 mb-6 cursor-pointer" onclick="openModule('inicio')">
+        <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
+          <i class="fa-solid fa-ghost text-lg"></i>
         </div>
-        <span class="font-extrabold text-xl tracking-tight text-gray-900">GHOST<span class="text-indigo-600">.xeo</span></span>
+        <span class="font-extrabold text-lg tracking-wider text-gray-900">GHOST<span class="text-indigo-600">.xeo</span></span>
       </div>
 
-      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">MENÚ PRINCIPAL</div>
+      <!-- SECCIÓN PERFIL -->
+      <div class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-3">PERFIL</div>
       <nav class="space-y-1 mb-6">
-        <button type="button" onclick="navegar('inicio')" id="btn-inicio" class="btn-nav w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-indigo-600 bg-indigo-50 font-semibold text-sm transition">
-          <i class="fa-solid fa-house w-5"></i> Inicio
+        <button type="button" onclick="openModule('inicio')" id="nav-inicio" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-900 bg-gray-100 font-semibold text-sm transition">
+          <i class="fa-solid fa-house w-5 text-gray-500"></i> Inicio
         </button>
         
-        <button type="button" onclick="navegar('recargar')" id="btn-recargar" class="btn-nav w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
+        <button type="button" onclick="openModule('recargar')" id="nav-recargar" class="item-nav w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
           <div class="flex items-center gap-3">
-            <i class="fa-solid fa-wallet w-5 text-amber-500"></i> Recargar / Depositar
+            <i class="fa-solid fa-coins w-5 text-amber-500"></i> Recargar
           </div>
-          <span id="saldo-badge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">S/ 0.00</span>
+          <span id="badge-saldo" class="bg-indigo-50 text-indigo-600 text-xs font-bold px-2.5 py-0.5 rounded-full">S/ 0.00</span>
         </button>
 
-        <button type="button" onclick="navegar('perfil')" id="btn-perfil" class="btn-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
-          <i class="fa-solid fa-user-circle w-5 text-gray-400"></i> Mi Perfil
+        <button type="button" onclick="openModule('perfil')" id="nav-perfil" class="item-nav w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-user w-5 text-gray-500"></i> Perfil
+          </div>
+          <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
         </button>
 
-        <button type="button" onclick="navegar('reniec')" id="btn-reniec" class="btn-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
-          <i class="fa-solid fa-address-card w-5 text-gray-400"></i> RENIEC Online
+        <button type="button" onclick="openModule('buscar-nombres')" id="nav-buscar-nombres" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-magnifying-glass w-5 text-gray-500"></i> Buscar Nombres
+        </button>
+
+        <button type="button" onclick="openModule('reniec-v1')" id="nav-reniec-v1" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-address-card w-5 text-gray-500"></i> Reniec V1
+        </button>
+
+        <button type="button" onclick="openModule('reniec-online')" id="nav-reniec-online" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-id-card w-5 text-gray-500"></i> Reniec Online
+        </button>
+
+        <button type="button" onclick="openModule('sentinel')" id="nav-sentinel" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-shield-halved w-5 text-gray-500"></i> Sentinel
+        </button>
+
+        <button type="button" onclick="openModule('consumos')" id="nav-consumos" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-layer-group w-5 text-gray-500"></i> Consumos
         </button>
       </nav>
 
-      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">BÚSQUEDAS</div>
+      <!-- SECCIÓN MENU -->
+      <div class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-3">MENU</div>
       <nav class="space-y-1">
-        <button type="button" onclick="navegar('doxing')" id="btn-doxing" class="btn-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
-          <i class="fa-solid fa-cubes w-5 text-gray-400"></i> DOXING
+        <button type="button" onclick="openModule('meta-v1')" id="nav-meta-v1" class="item-nav w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-regular fa-compass w-5 text-gray-500"></i> Meta v1
+          </div>
+          <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
         </button>
-        <button type="button" onclick="navegar('telefonos')" id="btn-telefonos" class="btn-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition">
-          <i class="fa-solid fa-phone w-5 text-gray-400"></i> Teléfonos
+
+        <button type="button" onclick="openModule('doxing')" id="nav-doxing" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-cubes w-5 text-gray-500"></i> DOXING
+        </button>
+
+        <button type="button" onclick="openModule('metadata')" id="nav-metadata" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-database w-5 text-gray-500"></i> METADATA
+        </button>
+
+        <button type="button" onclick="openModule('telefonos')" id="nav-telefonos" class="item-nav w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+          <i class="fa-solid fa-phone w-5 text-gray-500"></i> Teléfonos
         </button>
       </nav>
     </aside>
 
-    <!-- ÁREA DE CONTENIDO -->
+    <!-- ÁREA DE VISTAS PRINCIPALES -->
     <main class="flex-1 p-8 overflow-y-auto">
-      <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-        <h1 id="titulo-seccion" class="text-xl font-bold text-gray-800 uppercase">INICIO</h1>
+      
+      <!-- Top Bar -->
+      <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl border border-gray-200/80 shadow-sm">
+        <h1 id="mod-title" class="text-xl font-bold text-gray-800 tracking-wide">INICIO</h1>
         <div class="flex items-center gap-4">
-          <span class="text-xs font-semibold text-gray-500">Usuario: <strong id="header-username" class="text-indigo-600">Usuario_Demo</strong></span>
-          <button type="button" onclick="navegar('recargar')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow-sm">
-            Saldo: <span id="header-saldo">S/ 0.00</span>
+          <span class="text-xs font-semibold text-gray-500">Usuario: <strong id="lbl-username" class="text-indigo-600">Invitado</strong></span>
+          <button type="button" onclick="openModule('recargar')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow-sm">
+            Saldo: <span id="top-saldo">S/ 0.00</span>
           </button>
         </div>
       </header>
 
-      <!-- VISTA 1: INICIO -->
-      <section id="vista-inicio" class="vista-sec space-y-6">
+      <!-- MODULO 1: INICIO -->
+      <section id="mod-inicio" class="module-sec space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <span class="text-xs text-gray-400 font-bold uppercase">Saldo Actual</span>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm">
+            <span class="text-xs text-gray-400 font-bold uppercase">Saldo Disponible</span>
             <h2 id="card-saldo" class="text-3xl font-extrabold text-indigo-600 mt-2">S/ 0.00</h2>
-            <button type="button" onclick="navegar('recargar')" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-2.5 rounded-xl text-xs transition">Depositar Dinero</button>
+            <button type="button" onclick="openModule('recargar')" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-2.5 rounded-xl text-xs transition">Recargar Crédito</button>
           </div>
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <span class="text-xs text-gray-400 font-bold uppercase">Consultas Realizadas</span>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm">
+            <span class="text-xs text-gray-400 font-bold uppercase">Consultas Ejecutadas</span>
             <h2 id="card-consultas" class="text-3xl font-extrabold text-gray-800 mt-2">0</h2>
-            <span class="text-xs text-gray-500 mt-2 block">Búsquedas acumuladas</span>
+            <span class="text-xs text-gray-500 mt-2 block">Consultas registradas</span>
           </div>
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <span class="text-xs text-gray-400 font-bold uppercase">Estado de Licencia</span>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm">
+            <span class="text-xs text-gray-400 font-bold uppercase">Membresía</span>
             <h2 class="text-3xl font-extrabold text-emerald-600 mt-2">VIP</h2>
-            <span class="text-xs text-gray-500 mt-2 block">Acceso activo</span>
+            <span class="text-xs text-gray-500 mt-2 block">Acceso Total Habilitado</span>
           </div>
         </div>
       </section>
 
-      <!-- VISTA 2: RECARGAR -->
-      <section id="vista-recargar" class="vista-sec hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm max-w-xl">
+      <!-- MODULO 2: RECARGAR -->
+      <section id="mod-recargar" class="module-sec hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm max-w-xl">
           <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-money-bill-wave text-emerald-500"></i> Depositar Saldo
+            <i class="fa-solid fa-coins text-amber-500"></i> Recargar Saldo de Cuenta
           </h2>
-          <p class="text-xs text-gray-500 mb-6">Ingresa el monto a abonar a tu cuenta.</p>
+          <p class="text-xs text-gray-500 mb-6">Abona dinero a tu cuenta para realizar consultas en los módulos.</p>
 
           <div class="space-y-4">
             <div>
-              <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Monto a Depositar (S/)</label>
-              <input type="number" id="input-deposito" placeholder="Ejemplo: 20" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <label class="block text-xs font-bold text-gray-700 uppercase mb-2">1. Método de Pago</label>
+              <div class="grid grid-cols-3 gap-3">
+                <button type="button" class="p-3 bg-indigo-50 border-2 border-indigo-600 rounded-xl font-bold text-xs text-indigo-700">Yape / Plin</button>
+                <button type="button" class="p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold text-xs text-gray-600">Tarjeta</button>
+                <button type="button" class="p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold text-xs text-gray-600">Efectivo</button>
+              </div>
             </div>
 
-            <button type="button" onclick="procesarDeposito()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-              <i class="fa-solid fa-check-circle"></i> Confirmar Depósito
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase mb-1">2. Monto a Depositar (S/)</label>
+              <input type="number" id="input-recarga" placeholder="Ej. 10, 20, 50" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <button type="button" onclick="ejecutarRecarga()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-check-circle"></i> Confirmar y Agregar Saldo
             </button>
           </div>
         </div>
       </section>
 
-      <!-- VISTA 3: PERFIL -->
-      <section id="vista-perfil" class="vista-sec hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm max-w-md">
+      <!-- MODULO 3: PERFIL -->
+      <section id="mod-perfil" class="module-sec hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm max-w-md">
           <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-user-gear text-indigo-600"></i> Datos de la Cuenta
+            <i class="fa-solid fa-user-gear text-indigo-600"></i> Configuración de Perfil
           </h2>
           <div class="space-y-3 text-sm">
-            <p><strong>Nombre:</strong> <span id="perf-nombre">Usuario Registrado</span></p>
-            <p><strong>Usuario:</strong> <span id="perf-user">Usuario_Demo</span></p>
-            <p><strong>Estado:</strong> <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Activo</span></p>
+            <p><strong>Nombre:</strong> <span id="lbl-nombre-perfil">Carlos Mendoza</span></p>
+            <p><strong>Usuario:</strong> <span id="lbl-user-perfil">cmendoza</span></p>
+            <p><strong>Estado de Cuenta:</strong> <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Activo</span></p>
+            <p><strong>Rango de Acceso:</strong> VIP Platinum</p>
           </div>
         </div>
       </section>
 
-      <!-- VISTA 4: RENIEC -->
-      <section id="vista-reniec" class="vista-sec hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm max-w-2xl">
-          <label class="block text-sm font-bold text-gray-700 mb-2">Consulta RENIEC por DNI</label>
+      <!-- MODULO 4: BUSCAR NOMBRES -->
+      <section id="mod-buscar-nombres" class="module-sec hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm max-w-2xl">
+          <label class="block text-sm font-bold text-gray-700 mb-2">Búsqueda por Nombres y Apellidos</label>
           <div class="flex gap-3 mb-4">
-            <input type="text" id="dni-input" maxlength="8" placeholder="Ingrese DNI de 8 dígitos..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+            <input type="text" id="input-nombres" placeholder="Ingrese Nombres y Apellidos completos..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button type="button" onclick="ejecutarBuscarNombres()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition">Buscar</button>
+          </div>
+        </div>
+        <div id="res-nombres" class="hidden bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl space-y-2 text-sm">
+          <h3 class="font-bold border-b pb-2">Coincidencias Encontradas</h3>
+          <p><strong>Persona:</strong> <span id="val-nombres"></span></p>
+          <p><strong>DNI Coincidente:</strong> 72839401</p>
+        </div>
+      </section>
+
+      <!-- MODULO 5: RENIEC V1 / ONLINE -->
+      <section id="mod-reniec-online" class="module-sec hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm max-w-2xl">
+          <label class="block text-sm font-bold text-gray-700 mb-2">RENIEC - ONLINE (Consulta por DNI)</label>
+          <div class="flex gap-3 mb-4">
+            <input type="text" id="input-dni" maxlength="8" placeholder="Ingrese número de DNI (8 dígitos)..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
             <button type="button" onclick="ejecutarBuscarDNI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold text-sm transition">
-              Consultar DNI
+              Consultar
             </button>
           </div>
         </div>
 
-        <div id="res-reniec" class="hidden bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl">
-          <h3 class="font-bold text-lg mb-3 text-gray-800 border-b pb-2">Resultado de la Consulta</h3>
+        <div id="res-dni" class="hidden bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl shadow-sm">
+          <h3 class="font-bold text-lg mb-3 text-gray-800 border-b pb-2">Ficha de Identificación RENIEC</h3>
           <div class="space-y-2 text-sm">
-            <p><strong>DNI:</strong> <span id="reniec-dni-val"></span></p>
+            <p><strong>DNI:</strong> <span id="val-dni" class="font-bold"></span></p>
             <p><strong>Nombres:</strong> JUAN CARLOS</p>
-            <p><strong>Apellidos:</strong> PÉREZ GÓMEZ</p>
-            <p><strong>Estado:</strong> REGISTRADO</p>
+            <p><strong>Apellido Paterno:</strong> PÉREZ</p>
+            <p><strong>Apellido Materno:</strong> GÓMEZ</p>
+            <p><strong>Fecha de Nacimiento:</strong> 14/08/1995</p>
+            <p><strong>Estado Civil:</strong> SOLTERO</p>
           </div>
         </div>
       </section>
 
-      <!-- VISTA 5: DOXING -->
-      <section id="vista-doxing" class="vista-sec hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl">
-          <h2 class="text-lg font-bold text-gray-800 mb-3">Módulo DOXING</h2>
-          <input type="text" id="dox-input" placeholder="Ingrese teléfono o nombre..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <button type="button" onclick="ejecutarDox()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition">Buscar Datos</button>
-        </div>
-
-        <div id="res-dox" class="hidden bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl">
-          <h3 class="font-bold text-lg mb-2 text-gray-800 border-b pb-2">Reporte</h3>
-          <p class="text-sm"><strong>Parámetro:</strong> <span id="dox-val"></span></p>
-          <p class="text-sm"><strong>Estado:</strong> Línea Activa</p>
-        </div>
-      </section>
-
-      <!-- VISTA 6: TELÉFONOS -->
-      <section id="vista-telefonos" class="vista-sec hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl">
-          <h2 class="text-lg font-bold text-gray-800 mb-3">Consulta de Celular</h2>
-          <input type="text" id="tel-input" placeholder="Ingrese número celular..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <button type="button" onclick="ejecutarTel()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition">Buscar Titular</button>
-        </div>
-
-        <div id="res-tel" class="hidden bg-white p-6 rounded-2xl border border-gray-200 max-w-2xl">
-          <h3 class="font-bold text-lg mb-2 text-gray-800 border-b pb-2">Resultado</h3>
-          <p class="text-sm"><strong>Número:</strong> <span id="tel-val"></span></p>
-          <p class="text-sm"><strong>Titular:</strong> PÉREZ GÓMEZ, JUAN CARLOS</p>
-        </div>
-      </section>
+      <!-- MODULOS SECUNDARIOS -->
+      <section id="mod-reniec-v1" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo RENIEC V1 estándar.</div></section>
+      <section id="mod-sentinel" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo Sentinel Finanzas en línea.</div></section>
+      <section id="mod-consumos" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Historial de consultas de la sesión.</div></section>
+      <section id="mod-meta-v1" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo Meta V1 activado.</div></section>
+      <section id="mod-doxing" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo DOXING disponible.</div></section>
+      <section id="mod-metadata" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Bases de datos METADATA conectadas.</div></section>
+      <section id="mod-telefonos" class="module-sec hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Búsqueda de líneas telefónicas activas.</div></section>
     </main>
   </div>
 
   <script>
-    let saldoTotal = 0.00;
-    let consultasCount = 0;
+    let currentBalance = 0.00;
+    let totalQueries = 0;
 
-    function iniciarSesion() {
-      const nombreInput = document.getElementById('reg-nombre').value.trim();
-      const userInput = document.getElementById('reg-user').value.trim();
+    function registrarYEntrar() {
+      const nom = document.getElementById('reg-nombre').value.trim();
+      const usr = document.getElementById('reg-user').value.trim();
 
-      const nombre = nombreInput || "Usuario Registrado";
-      const user = userInput || "Admin_Ghost";
+      const nombre = nom || "Carlos Mendoza";
+      const user = usr || "cmendoza";
 
-      document.getElementById('header-username').innerText = user;
-      document.getElementById('perf-nombre').innerText = nombre;
-      document.getElementById('perf-user').innerText = user;
+      document.getElementById('lbl-username').innerText = user;
+      document.getElementById('lbl-nombre-perfil').innerText = nombre;
+      document.getElementById('lbl-user-perfil').innerText = user;
 
-      entrarDirecto();
+      entrarDirectoDemo();
     }
 
-    function entrarDirecto() {
-      const reg = document.getElementById('pantalla-registro');
-      const panel = document.getElementById('panel-principal');
+    function entrarDirectoDemo() {
+      const loginScreen = document.getElementById('screen-login');
+      const dashScreen = document.getElementById('screen-dashboard');
 
-      if (reg) reg.setAttribute('style', 'display: none !important');
-      if (panel) panel.classList.remove('hidden');
+      if (loginScreen) loginScreen.style.display = 'none';
+      if (dashScreen) dashScreen.classList.remove('hidden');
     }
 
-    function navegar(idVista) {
-      document.querySelectorAll('.vista-sec').forEach(el => el.classList.add('hidden'));
-      const destino = document.getElementById(vista-${idVista});
-      if (destino) destino.classList.remove('hidden');
+    function openModule(modId) {
+      document.querySelectorAll('.module-sec').forEach(el => el.classList.add('hidden'));
 
-      document.getElementById('titulo-seccion').innerText = idVista.toUpperCase();
+      // Manejo de alias
+      let targetId = modId;
+      if (modId === 'reniec-v1') targetId = 'reniec-online';
 
-      document.querySelectorAll('.btn-nav').forEach(btn => {
-        btn.classList.remove('text-indigo-600', 'bg-indigo-50', 'font-semibold');
+      const target = document.getElementById(mod-${targetId});
+      if (target) target.classList.remove('hidden');
+
+      document.getElementById('mod-title').innerText = modId.replace('-', ' ').toUpperCase();
+
+      document.querySelectorAll('.item-nav').forEach(btn => {
+        btn.classList.remove('bg-gray-100', 'text-gray-900', 'font-semibold');
         btn.classList.add('text-gray-600', 'font-medium');
       });
 
-      const btnActivo = document.getElementById(btn-${idVista});
-      if (btnActivo) {
-        btnActivo.classList.add('text-indigo-600', 'bg-indigo-50', 'font-semibold');
-        btnActivo.classList.remove('text-gray-600');
+      const activeBtn = document.getElementById(nav-${modId});
+      if (activeBtn) {
+        activeBtn.classList.add('bg-gray-100', 'text-gray-900', 'font-semibold');
+        activeBtn.classList.remove('text-gray-600');
       }
     }
 
-    function procesarDeposito() {
-      const val = document.getElementById('input-deposito').value;
-      const monto = parseFloat(val);
+    function ejecutarRecarga() {
+      const input = document.getElementById('input-recarga');
+      const monto = parseFloat(input.value);
+
       if (!isNaN(monto) && monto > 0) {
-        saldoTotal += monto;
-        actualizarValoresUI();
-        document.getElementById('input-deposito').value = '';
-        alert(¡Depósito recibido! Se han abonado S/ ${monto.toFixed(2)} a tu saldo.);
+        currentBalance += monto;
+        updateUI();
+        input.value = '';
+        alert(¡Recarga exitosa! Se han abonado S/ ${monto.toFixed(2)} a tu saldo.);
       } else {
-        alert("Ingresa un monto válido para depositar.");
+        alert("Por favor ingresa un monto válido.");
       }
     }
 
-    function actualizarValoresUI() {
-      const txt = S/ ${saldoTotal.toFixed(2)};
-      document.getElementById('saldo-badge').innerText = txt;
-      document.getElementById('header-saldo').innerText = txt;
-      document.getElementById('card-saldo').innerText = txt;
-      document.getElementById('card-consultas').innerText = consultasCount;
+    function updateUI() {
+      const formatted = S/ ${currentBalance.toFixed(2)};
+      document.getElementById('badge-saldo').innerText = formatted;
+      document.getElementById('top-saldo').innerText = formatted;
+      document.getElementById('card-saldo').innerText = formatted;
+      document.getElementById('card-consultas').innerText = totalQueries;
     }
 
     function ejecutarBuscarDNI() {
-      const val = document.getElementById('dni-input').value;
-      if (val.length !== 8) { alert("Ingresa un DNI de 8 dígitos."); return; }
-      consultasCount++;
-      actualizarValoresUI();
-      document.getElementById('reniec-dni-val').innerText = val;
-      document.getElementById('res-reniec').classList.remove('hidden');
+      const dni = document.getElementById('input-dni').value.trim();
+      if (dni.length !== 8 || isNaN(dni)) {
+        alert("Por favor ingresa un número de DNI válido de 8 dígitos.");
+        return;
+      }
+      totalQueries++;
+      updateUI();
+      document.getElementById('val-dni').innerText = dni;
+      document.getElementById('res-dni').classList.remove('hidden');
     }
 
-    function ejecutarDox() {
-      const val = document.getElementById('dox-input').value;
-      if (!val) { alert("Ingresa un dato para buscar."); return; }
-      consultasCount++;
-      actualizarValoresUI();
-      document.getElementById('dox-val').innerText = val;
-      document.getElementById('res-dox').classList.remove('hidden');
-    }
-
-    function ejecutarTel() {
-      const val = document.getElementById('tel-input').value;
-      if (val.length < 9) { alert("Ingresa un número de 9 dígitos."); return; }
-      consultasCount++;
-      actualizarValoresUI();
-      document.getElementById('tel-val').innerText = val;
-      document.getElementById('res-tel').classList.remove('hidden');
+    function ejecutarBuscarNombres() {
+      const nom = document.getElementById('input-nombres').value.trim();
+      if (!nom) {
+        alert("Ingresa un nombre para buscar.");
+        return;
+      }
+      totalQueries++;
+      updateUI();
+      document.getElementById('val-nombres').innerText = nom;
+      document.getElementById('res-nombres').classList.remove('hidden');
     }
   </script>
 </body>
