@@ -1,789 +1,290 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-[#f4f3f8]">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOST.xeo - Platform Dashboard</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0f2fe',
-                            100: '#e1e5fe',
-                            500: '#635bff',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#1e1b4b',
-                        },
-                        bgLight: '#f4f3f8',
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHOST.xeo - Panel de Control Interactivo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            ghost: { bg: '#f4f3f8', sidebar: '#ffffff', text: '#212529', primary: '#4f46e5' }
+          }
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        /* Custom scrollbar for sleek dashboard feel */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.02);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.25);
-        }
-    </style>
+      }
+    }
+  </script>
 </head>
-<body class="h-full bg-[#f4f3f8] text-slate-700 antialiased selection:bg-brand-500 selection:text-white">
+<body class="bg-[#f4f3f8] text-gray-800 font-sans min-h-screen flex selection:bg-indigo-500 selection:text-white">
 
-    <div class="min-h-screen flex flex-col md:flex-row relative overflow-x-hidden">
-
-        <!-- MOBILE OVERLAY BACKDROP -->
-        <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300"></div>
-
-        <!-- SIDEBAR -->
-        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-[280px] bg-white border-r border-slate-200/80 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shrink-0 shadow-lg md:shadow-none">
-            
-            <!-- BRAND HEADER -->
-            <div class="p-6 pb-2 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/10">
-                        <!-- Ghost Logo Icon -->
-                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                            <path d="M12 2A9 9 0 0 0 3 11v8a3 3 0 0 0 3 3 2.5 2.5 0 0 0 2-1 2.5 2.5 0 0 0 4 0 2.5 2.5 0 0 0 2 1 3 3 0 0 0 3-3v-8a9 9 0 0 0-9-9zm-3 8a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 10zm6 0a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 15 10z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-lg font-extrabold tracking-tight text-slate-900 uppercase block leading-none">GHOST.xeo</span>
-                        <span class="text-[10px] font-semibold tracking-wider text-slate-400 uppercase">OSINT & Data Portal</span>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-600 p-1">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- SIDEBAR NAV CONTENT -->
-            <div class="flex-1 overflow-y-auto px-4 py-4 space-y-6">
-                
-                <!-- SECTION 1: PERFIL -->
-                <div>
-                    <div class="px-3 mb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Perfil</div>
-                    <nav class="space-y-1">
-                        <button onclick="setActiveNav('inicio')" id="nav-inicio" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="home" class="w-4 h-4"></i>
-                            <span>Inicio</span>
-                        </button>
-
-                        <button onclick="setActiveNav('recargar')" id="nav-recargar" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="coins" class="w-4 h-4 text-amber-500"></i>
-                                <span>Recargar</span>
-                            </div>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800" id="sidebarBalance">
-                                S/ 150.00
-                            </span>
-                        </button>
-
-                        <div>
-                            <button onclick="toggleSubmenu('perfil-sub')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                                <div class="flex items-center gap-3">
-                                    <i data-lucide="user" class="w-4 h-4"></i>
-                                    <span>Perfil</span>
-                                </div>
-                                <i data-lucide="chevron-down" id="perfil-arrow" class="w-4 h-4 transition-transform duration-200"></i>
-                            </button>
-                            <div id="perfil-sub" class="hidden pl-9 pr-2 py-1 space-y-1">
-                                <a href="#" onclick="setActiveNav('profile-settings')" class="block py-1.5 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100">Mi Cuenta</a>
-                                <a href="#" onclick="setActiveNav('profile-settings')" class="block py-1.5 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100">API Keys</a>
-                            </div>
-                        </div>
-
-                        <button onclick="setActiveNav('buscar-nombres')" id="nav-buscar-nombres" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="search" class="w-4 h-4"></i>
-                            <span>Buscar Nombres</span>
-                        </button>
-
-                        <button onclick="setActiveNav('reniec-v1')" id="nav-reniec-v1" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="id-card" class="w-4 h-4"></i>
-                            <span>Reniec V1</span>
-                        </button>
-
-                        <button onclick="setActiveNav('reniec-online')" id="nav-reniec-online" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-900 bg-slate-100/90 font-semibold shadow-sm">
-                            <i data-lucide="id-card" class="w-4 h-4 text-brand-600"></i>
-                            <span>Reniec Online</span>
-                        </button>
-
-                        <button onclick="setActiveNav('sentinel')" id="nav-sentinel" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="shield" class="w-4 h-4"></i>
-                            <span>Sentinel</span>
-                        </button>
-
-                        <button onclick="setActiveNav('consumos')" id="nav-consumos" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="layers" class="w-4 h-4"></i>
-                            <span>Consumos</span>
-                        </button>
-                    </nav>
-                </div>
-
-                <!-- SECTION 2: MENU -->
-                <div>
-                    <div class="px-3 mb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Menu</div>
-                    <nav class="space-y-1">
-                        <div>
-                            <button onclick="toggleSubmenu('meta-sub')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                                <div class="flex items-center gap-3">
-                                    <i data-lucide="compass" class="w-4 h-4"></i>
-                                    <span>Meta v1</span>
-                                </div>
-                                <i data-lucide="chevron-down" id="meta-arrow" class="w-4 h-4 transition-transform duration-200"></i>
-                            </button>
-                            <div id="meta-sub" class="hidden pl-9 pr-2 py-1 space-y-1">
-                                <a href="#" onclick="setActiveNav('meta-v1')" class="block py-1.5 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100">Meta Search</a>
-                                <a href="#" onclick="setActiveNav('meta-v1')" class="block py-1.5 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100">Social Graph</a>
-                            </div>
-                        </div>
-
-                        <button onclick="setActiveNav('doxing')" id="nav-doxing" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="box" class="w-4 h-4"></i>
-                            <span>DOXING</span>
-                        </button>
-
-                        <button onclick="setActiveNav('metadata')" id="nav-metadata" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                            <span>METADATA</span>
-                        </button>
-
-                        <button onclick="setActiveNav('telefonos')" id="nav-telefonos" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-                            <i data-lucide="phone" class="w-4 h-4"></i>
-                            <span>Teléfonos</span>
-                        </button>
-                    </nav>
-                </div>
-            </div>
-
-            <!-- USER FOOTER -->
-            <div class="p-4 border-t border-slate-200/80 bg-slate-50/50">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                        GX
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-bold text-slate-800 truncate">demo_user@ghost.xeo</p>
-                        <p class="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Plan VIP Activo
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTAINER -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-            
-            <!-- TOP BAR -->
-            <header class="h-16 bg-white/70 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/80 px-4 md:px-8 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3 flex-1 max-w-xl">
-                    <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100">
-                        <i data-lucide="menu" class="w-5 h-5"></i>
-                    </button>
-
-                    <!-- Top Search Bar -->
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
-                            <i data-lucide="search" class="w-4 h-4"></i>
-                        </div>
-                        <input type="text" id="globalSearch" placeholder="Búsqueda rápida en el sistema..." class="w-full pl-4 pr-10 py-2 rounded-xl border border-slate-200/90 bg-slate-50/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-xs transition-all placeholder:text-slate-400">
-                    </div>
-                </div>
-
-                <!-- Right Quick Stats & Actions -->
-                <div class="flex items-center gap-3">
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl text-xs font-medium text-slate-600">
-                        <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
-                        <span>Latencia API: <strong class="text-slate-800">24ms</strong></span>
-                    </div>
-
-                    <button class="relative p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors">
-                        <i data-lucide="bell" class="w-5 h-5"></i>
-                        <span class="absolute top-2 right-2 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-white"></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- MAIN CONTENT AREA -->
-            <main class="p-4 md:p-8 max-w-6xl w-full mx-auto space-y-6">
-
-                <!-- NOTIFICATION BANNER -->
-                <div id="statusBanner" class="hidden rounded-2xl p-4 border transition-all"></div>
-
-                <!-- DYNAMIC VIEW CONTAINER -->
-                <div id="viewContainer">
-
-                    <!-- VIEW: RENIEC ONLINE (DEFAULT SELECTED) -->
-                    <div id="view-reniec-online" class="view-panel space-y-6">
-                        
-                        <!-- Main Search Card -->
-                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 max-w-2xl">
-                            <div class="mb-6">
-                                <div class="flex items-center gap-2 text-brand-600 text-xs font-bold tracking-wider uppercase mb-1">
-                                    <i data-lucide="shield-check" class="w-4 h-4"></i> Consulta Oficial
-                                </div>
-                                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">RENIEC - ONLINE</h1>
-                                <p class="text-slate-500 text-xs mt-1">Búsqueda directa de personas en la base de datos nacional en tiempo real.</p>
-                            </div>
-
-                            <form id="reniecForm" onsubmit="handleReniecSearch(event)" class="space-y-5">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1.5">Número de DNI</label>
-                                    <input type="text" id="dniInput" maxlength="8" placeholder="Ingrese 8 dígitos (ej: 47829102)" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-sm transition-all font-mono">
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1.5">Modo de Consulta</label>
-                                    <div class="relative">
-                                        <select id="modeSelect" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-sm text-slate-700 transition-all cursor-pointer pr-10">
-                                            <option value="completo">Consulta Completa (Ficha + Foto) - 1 Crédito</option>
-                                            <option value="basico">Consulta Básica (Solo Nombres) - 0.5 Créditos</option>
-                                            <option value="familires">Árbol Genealógico - 2 Créditos</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
-                                            <i data-lucide="chevrons-up-down" class="w-4 h-4"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button type="submit" id="reniecSubmitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-6 rounded-xl shadow-md shadow-slate-900/10 transition-all flex items-center justify-center gap-2 text-sm">
-                                    <i data-lucide="search" class="w-4 h-4"></i>
-                                    <span>Consultar RENIEC</span>
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- RESULT CONTAINER -->
-                        <div id="reniecResult" class="hidden">
-                            <!-- Populated dynamically via JS -->
-                        </div>
-
-                    </div>
-
-                    <!-- VIEW: INICIO -->
-                    <div id="view-inicio" class="view-panel hidden space-y-6">
-                        <div class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden">
-                            <div class="relative z-10 max-w-xl">
-                                <span class="px-3 py-1 rounded-full bg-brand-500/20 text-brand-100 text-xs font-semibold inline-block mb-3 border border-brand-500/30">Versión 4.2 Activa</span>
-                                <h1 class="text-3xl font-extrabold tracking-tight">Bienvenido a GHOST.xeo</h1>
-                                <p class="text-slate-300 text-sm mt-2 leading-relaxed">Plataforma integral de inteligencia de datos, validación de identidad y consultas OSINT en tiempo real.</p>
-                                <div class="mt-6 flex flex-wrap gap-3">
-                                    <button onclick="setActiveNav('reniec-online')" class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-semibold text-xs hover:bg-slate-100 transition-all shadow-md">
-                                        Ir a RENIEC Online
-                                    </button>
-                                    <button onclick="setActiveNav('recargar')" class="px-5 py-2.5 rounded-xl bg-brand-500/30 text-white font-semibold text-xs hover:bg-brand-500/40 transition-all border border-brand-400/30">
-                                        Recargar Saldo
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- QUICK METRICS -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                                <div class="p-3 bg-brand-50 text-brand-600 rounded-xl">
-                                    <i data-lucide="search" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-slate-500">Consultas Hoy</p>
-                                    <h3 class="text-xl font-bold text-slate-900">1,284</h3>
-                                </div>
-                            </div>
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                                    <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-slate-500">Efectividad API</p>
-                                    <h3 class="text-xl font-bold text-slate-900">99.8%</h3>
-                                </div>
-                            </div>
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                                <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
-                                    <i data-lucide="coins" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-slate-500">Saldo Disponible</p>
-                                    <h3 class="text-xl font-bold text-slate-900" id="dashBalance">S/ 150.00</h3>
-                                </div>
-                            </div>
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                                <div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
-                                    <i data-lucide="database" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-slate-500">Módulos Disponibles</p>
-                                    <h3 class="text-xl font-bold text-slate-900">12 Módulos</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- VIEW: BUSCAR NOMBRES -->
-                    <div id="view-buscar-nombres" class="view-panel hidden space-y-6">
-                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80">
-                            <h1 class="text-xl font-bold text-slate-900 mb-2">Búsqueda por Nombres y Apellidos</h1>
-                            <p class="text-xs text-slate-500 mb-6">Localice documentos DNI ingresando nombres y apellidos completos o parciales.</p>
-                            
-                            <form onsubmit="handleNameSearch(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nombres</label>
-                                    <input type="text" id="searchNombre" placeholder="ej: Carlos Eduardo" required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Apellido Paterno</label>
-                                    <input type="text" id="searchPaterno" placeholder="ej: Mendoza" required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Apellido Materno</label>
-                                    <input type="text" id="searchMaterno" placeholder="ej: Quispe" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none">
-                                </div>
-                                <div class="md:col-span-3">
-                                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2">
-                                        <i data-lucide="search" class="w-4 h-4"></i> Buscar Coincidencias
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div id="nameSearchResults"></div>
-                    </div>
-
-                    <!-- VIEW: TELÉFONOS -->
-                    <div id="view-telefonos" class="view-panel hidden space-y-6">
-                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 max-w-xl">
-                            <h1 class="text-xl font-bold text-slate-900 mb-2">Consulta de Números / Titularidad</h1>
-                            <p class="text-xs text-slate-500 mb-6">Obtenga información de operador y titular asociado a una línea telefónica.</p>
-
-                            <form onsubmit="handlePhoneSearch(event)" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Número Telefónico</label>
-                                    <input type="text" id="phoneInput" placeholder="Ej: 987654321" maxlength="9" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none">
-                                </div>
-                                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm transition-all">
-                                    Consultar Operador & Titular
-                                </button>
-                            </form>
-                        </div>
-                        <div id="phoneResult"></div>
-                    </div>
-
-                    <!-- VIEW: SENTINEL -->
-                    <div id="view-sentinel" class="view-panel hidden space-y-6">
-                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 max-w-2xl">
-                            <div class="flex items-center gap-2 text-rose-600 text-xs font-bold tracking-wider uppercase mb-1">
-                                <i data-lucide="shield-alert" class="w-4 h-4"></i> RIESGO FINANCIERO
-                            </div>
-                            <h1 class="text-xl font-bold text-slate-900 mb-2">Sentinel - Reporte Deudas & Infocorp</h1>
-                            <p class="text-xs text-slate-500 mb-6">Verificación de score crediticio, semáforo de riesgo y deudas del sistema financiero.</p>
-
-                            <form onsubmit="handleSentinelSearch(event)" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">DNI o RUC</label>
-                                    <input type="text" id="sentinelDoc" placeholder="Ingrese 8 u 11 dígitos" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none">
-                                </div>
-                                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm transition-all">
-                                    Generar Reporte Financiero
-                                </button>
-                            </form>
-                        </div>
-                        <div id="sentinelResult"></div>
-                    </div>
-
-                    <!-- VIEW: RECARGAR -->
-                    <div id="view-recargar" class="view-panel hidden space-y-6">
-                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80">
-                            <h1 class="text-2xl font-bold text-slate-900 mb-2">Recargar Saldo de Créditos</h1>
-                            <p class="text-xs text-slate-500 mb-6">Seleccione un paquete de créditos para abonar saldo de forma inmediata.</p>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                                <div class="border border-slate-200 hover:border-brand-500 rounded-2xl p-6 transition-all hover:shadow-md flex flex-col justify-between">
-                                    <div>
-                                        <span class="text-xs font-bold text-slate-400 uppercase">Plan Básico</span>
-                                        <h3 class="text-2xl font-black text-slate-900 mt-2">S/ 50.00</h3>
-                                        <p class="text-xs text-slate-500 mt-1">50 Créditos de búsqueda</p>
-                                    </div>
-                                    <button onclick="simulateRecharge(50)" class="mt-6 w-full py-2.5 rounded-xl bg-slate-100 hover:bg-brand-500 hover:text-white text-slate-800 font-semibold text-xs transition-all">
-                                        Seleccionar
-                                    </button>
-                                </div>
-
-                                <div class="border-2 border-brand-500 rounded-2xl p-6 shadow-sm relative flex flex-col justify-between bg-brand-50/20">
-                                    <span class="absolute -top-3 right-4 bg-brand-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Más Popular</span>
-                                    <div>
-                                        <span class="text-xs font-bold text-brand-600 uppercase">Plan Pro</span>
-                                        <h3 class="text-2xl font-black text-slate-900 mt-2">S/ 100.00</h3>
-                                        <p class="text-xs text-slate-500 mt-1">120 Créditos (+20 Gratis)</p>
-                                    </div>
-                                    <button onclick="simulateRecharge(100)" class="mt-6 w-full py-2.5 rounded-xl bg-brand-500 text-white font-semibold text-xs hover:bg-brand-600 transition-all shadow-md">
-                                        Recargar Ahora
-                                    </button>
-                                </div>
-
-                                <div class="border border-slate-200 hover:border-brand-500 rounded-2xl p-6 transition-all hover:shadow-md flex flex-col justify-between">
-                                    <div>
-                                        <span class="text-xs font-bold text-slate-400 uppercase">Plan Enterprise</span>
-                                        <h3 class="text-2xl font-black text-slate-900 mt-2">S/ 250.00</h3>
-                                        <p class="text-xs text-slate-500 mt-1">350 Créditos Ilimitados</p>
-                                    </div>
-                                    <button onclick="simulateRecharge(250)" class="mt-6 w-full py-2.5 rounded-xl bg-slate-100 hover:bg-brand-500 hover:text-white text-slate-800 font-semibold text-xs transition-all">
-                                        Seleccionar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- VIEW: GENERIC FALLBACK FOR OTHER MENU ITEMS -->
-                    <div id="view-generic" class="view-panel hidden">
-                        <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200/80 text-center py-16">
-                            <div class="w-16 h-16 bg-brand-50 rounded-2xl text-brand-600 flex items-center justify-center mx-auto mb-4">
-                                <i data-lucide="layers" class="w-8 h-8"></i>
-                            </div>
-                            <h2 class="text-xl font-bold text-slate-900" id="genericTitle">Módulo Activo</h2>
-                            <p class="text-xs text-slate-500 max-w-md mx-auto mt-2">Este módulo está en línea y sincronizado con las fuentes primarias. Ingrese los parámetros requeridos para ejecutar la consulta.</p>
-                            <div class="mt-6 max-w-sm mx-auto flex gap-2">
-                                <input type="text" placeholder="Parámetro de búsqueda..." class="flex-1 px-4 py-2 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/20">
-                                <button onclick="showToast('Consulta simulada ejecutada con éxito', 'success')" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-semibold">Ejecutar</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </main>
-        </div>
+  <!-- Sidebar / Menú Lateral -->
+  <aside class="w-72 bg-white border-r border-gray-200 min-h-screen flex flex-col p-5 shadow-sm shrink-0">
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-2 mb-8">
+      <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
+        <i class="fa-solid fa-ghost text-xl"></i>
+      </div>
+      <span class="font-extrabold text-xl tracking-tight text-gray-900">GHOST<span class="text-indigo-600">.xeo</span></span>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // State management
-        let currentBalance = 150.00;
+    <!-- Sección PERFIL -->
+    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">PERFIL</div>
+    <nav class="space-y-1 mb-6">
+      <button onclick="switchTab('inicio')" id="btn-inicio" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 text-sm font-medium transition">
+        <i class="fa-solid fa-house w-5 text-gray-400"></i> Inicio
+      </button>
+      
+      <button onclick="recargarSaldo()" class="w-full flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-coins w-5 text-amber-500"></i> Recargar
+        </div>
+        <span id="saldo-badge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">S/ 0.00</span>
+      </button>
 
-        // Initialize Lucide Icons on load
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-        });
+      <button onclick="switchTab('perfil')" id="btn-perfil" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <i class="fa-solid fa-user w-5 text-gray-400"></i> Perfil
+      </button>
 
-        // Sidebar toggle for mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const backdrop = document.getElementById('sidebarBackdrop');
-            sidebar.classList.toggle('-translate-x-full');
-            backdrop.classList.toggle('hidden');
-        }
+      <button onclick="switchTab('reniec')" id="btn-reniec" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-indigo-600 bg-indigo-50 font-semibold rounded-xl text-sm transition">
+        <i class="fa-solid fa-address-card w-5"></i> Reniec Online
+      </button>
 
-        // Submenu accordion toggle
-        function toggleSubmenu(id) {
-            const menu = document.getElementById(id);
-            const arrow = document.getElementById(id.replace('-sub', '-arrow'));
-            if (menu) {
-                menu.classList.toggle('hidden');
-                if (arrow) arrow.classList.toggle('rotate-180');
-            }
-        }
+      <button onclick="switchTab('sentinel')" id="btn-sentinel" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <i class="fa-solid fa-shield-halved w-5 text-gray-400"></i> Sentinel
+      </button>
 
-        // Dynamic Navigation Switching
-        function setActiveNav(navKey) {
-            // Update button UI states
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-slate-100/90', 'font-semibold', 'shadow-sm', 'text-slate-900');
-                btn.classList.add('text-slate-600');
-            });
+      <button onclick="switchTab('consumos')" id="btn-consumos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <i class="fa-solid fa-layer-group w-5 text-gray-400"></i> Consumos
+      </button>
+    </nav>
 
-            const activeBtn = document.getElementById(nav-${navKey});
-            if (activeBtn) {
-                activeBtn.classList.add('bg-slate-100/90', 'font-semibold', 'shadow-sm', 'text-slate-900');
-                activeBtn.classList.remove('text-slate-600');
-            }
+    <!-- Sección MENÚ -->
+    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">MÓDULOS EXTRA</div>
+    <nav class="space-y-1">
+      <button onclick="switchTab('doxing')" id="btn-doxing" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <i class="fa-solid fa-cubes w-5 text-gray-400"></i> DOXING
+      </button>
+      <button onclick="switchTab('telefonos')" id="btn-telefonos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-medium transition">
+        <i class="fa-solid fa-phone w-5 text-gray-400"></i> Teléfonos
+      </button>
+    </nav>
+  </aside>
 
-            // Hide all view panels
-            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+  <!-- ÁREA PRINCIPAL -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <!-- Header Global -->
+    <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+      <div class="flex items-center gap-3">
+        <h1 id="page-title" class="text-xl font-bold text-gray-800 uppercase">RENIEC - ONLINE</h1>
+        <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Servidor Activo
+        </span>
+      </div>
+      <div class="relative w-80">
+        <input type="text" placeholder="Buscar en la plataforma..." class="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+      </div>
+    </header>
 
-            // Show selected view panel
-            const targetView = document.getElementById(view-${navKey});
-            if (targetView) {
-                targetView.classList.remove('hidden');
-            } else {
-                // Fallback to generic view
-                const genericView = document.getElementById('view-generic');
-                document.getElementById('genericTitle').textContent = navKey.toUpperCase().replace('-', ' ');
-                genericView.classList.remove('hidden');
-            }
+    <!-- PESTAÑA: RENIEC -->
+    <section id="tab-reniec" class="tab-content space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm max-w-3xl">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Consulta por DNI</label>
+        <div class="flex gap-3 mb-4">
+          <input type="text" id="dni-input" maxlength="8" placeholder="Ingrese número de DNI (Ej. 72839401)..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+          <button onclick="buscarDNI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-indigo-100">
+            <i class="fa-solid fa-magnifying-glass"></i> Consultar
+          </button>
+        </div>
+        
+        <div class="flex items-center gap-4 text-xs text-gray-500">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-bolt text-amber-500"></i> Costo: S/ 1.00 por consulta</span>
+          <span class="flex items-center gap-1"><i class="fa-solid fa-clock"></i> Tiempo promedio: 0.8s</span>
+        </div>
+      </div>
 
-            // Auto close mobile sidebar after click
-            if (window.innerWidth < 768) {
-                const sidebar = document.getElementById('sidebar');
-                if (!sidebar.classList.contains('-translate-x-full')) {
-                    toggleSidebar();
-                }
-            }
+      <!-- Loader (Cargando) -->
+      <div id="loader" class="hidden bg-white p-8 rounded-2xl border border-gray-200 shadow-sm max-w-3xl text-center">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-600 mb-3"></i>
+        <p class="text-sm font-semibold text-gray-600">Consultando base de datos RENIEC en tiempo real...</p>
+      </div>
 
-            // Re-initialize dynamic icons if needed
-            setTimeout(() => lucide.createIcons(), 50);
-        }
+      <!-- Resultado DNI -->
+      <div id="resultado-dni" class="hidden bg-white rounded-2xl border border-gray-200 shadow-sm max-w-3xl overflow-hidden">
+        <div class="bg-indigo-600 px-6 py-4 text-white flex justify-between items-center">
+          <h3 class="font-bold text-base flex items-center gap-2">
+            <i class="fa-solid fa-id-card"></i> Ficha de Identificación RENIEC
+          </h3>
+          <span class="bg-white/20 text-xs px-3 py-1 rounded-full font-medium">Estado: ACTIVO</span>
+        </div>
 
-        // Toast message banner
-        function showToast(message, type = 'info') {
-            const banner = document.getElementById('statusBanner');
-            banner.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
-            
-            if (type === 'success') {
-                banner.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200');
-            } else {
-                banner.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200');
-            }
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Foto simulación -->
+          <div class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div class="w-32 h-40 bg-gray-200 rounded-lg flex items-center justify-center border border-gray-300 text-gray-400 mb-2 overflow-hidden">
+              <i class="fa-solid fa-user text-6xl"></i>
+            </div>
+            <span class="text-xs text-gray-500 font-medium">Foto Oficial RENIEC</span>
+          </div>
 
-            banner.innerHTML = `<div class="flex items-center gap-2 text-xs font-semibold">
-                <i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4"></i>
-                <span>${message}</span>
-            </div>`;
-            
-            lucide.createIcons();
+          <!-- Datos -->
+          <div class="md:col-span-2 space-y-3 text-sm">
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">DNI:</span>
+              <span id="res-dni" class="font-bold text-gray-800"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">Nombres:</span>
+              <span id="res-nombres" class="font-semibold text-gray-800">JUAN CARLOS</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">Apellido Paterno:</span>
+              <span id="res-paterno" class="font-semibold text-gray-800">PÉREZ</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">Apellido Materno:</span>
+              <span id="res-materno" class="font-semibold text-gray-800">GÓMEZ</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">Fecha Nacimiento:</span>
+              <span class="font-semibold text-gray-800">14/08/1995 (29 años)</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-gray-100 pb-2">
+              <span class="text-gray-500 font-medium">Estado Civil:</span>
+              <span class="font-semibold text-gray-800">SOLTERO(A)</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <span class="text-gray-500 font-medium">Ubigeo / Dirección:</span>
+              <span class="font-semibold text-gray-800">LIMA / LIMA / SAN ISIDRO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            setTimeout(() => {
-                banner.classList.add('hidden');
-            }, 4000);
-        }
+    <!-- PESTAÑA: INICIO -->
+    <section id="tab-inicio" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <span class="text-xs text-gray-400 font-bold uppercase">Saldo Disponible</span>
+          <h2 id="card-saldo" class="text-3xl font-extrabold text-indigo-600 mt-2">S/ 0.00</h2>
+          <button onclick="recargarSaldo()" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-2 rounded-xl text-xs transition">Recargar Saldo</button>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <span class="text-xs text-gray-400 font-bold uppercase">Consultas Realizadas</span>
+          <h2 id="card-consultas" class="text-3xl font-extrabold text-gray-800 mt-2">0</h2>
+          <span class="text-xs text-gray-500 mt-2 block">Hoy: 0 consultas</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <span class="text-xs text-gray-400 font-bold uppercase">Estado de Licencia</span>
+          <h2 class="text-3xl font-extrabold text-emerald-600 mt-2">VIP</h2>
+          <span class="text-xs text-gray-500 mt-2 block">Acceso Ilimitado a Módulos</span>
+        </div>
+      </div>
+    </section>
 
-        // Simulate RENIEC DNI Search
-        function handleReniecSearch(e) {
-            e.preventDefault();
-            const dni = document.getElementById('dniInput').value;
-            const btn = document.getElementById('reniecSubmitBtn');
-            const resultDiv = document.getElementById('reniecResult');
+    <!-- PESTAÑA: PERFIL -->
+    <section id="tab-perfil" class="tab-content hidden">
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm max-w-xl space-y-4">
+        <div class="flex items-center gap-4 pb-4 border-b">
+          <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">G</div>
+          <div>
+            <h3 class="font-bold text-lg text-gray-800">Usuario Administrador</h3>
+            <p class="text-sm text-gray-500">admin@ghost.xeo</p>
+          </div>
+        </div>
+        <div class="space-y-2 text-sm">
+          <p><strong>Rol:</strong> Propietario / Admin</p>
+          <p><strong>Miembro desde:</strong> Octubre 2026</p>
+          <p><strong>API Key:</strong> <code class="bg-gray-100 px-2 py-1 rounded text-xs">ghost_live_998348271</code></p>
+        </div>
+      </div>
+    </section>
 
-            if (dni.length !== 8 || isNaN(dni)) {
-                showToast('Ingrese un número de DNI válido de 8 dígitos', 'error');
-                return;
-            }
+    <!-- OTROS MÓDULOS -->
+    <section id="tab-sentinel" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo Sentinel en línea.</div></section>
+    <section id="tab-consumos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Historial de consumos vacío.</div></section>
+    <section id="tab-doxing" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Módulo DOXING disponible para miembros VIP.</div></section>
+    <section id="tab-telefonos" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl border border-gray-200">Consulta de titularidad telefónica en mantenimiento.</div></section>
+  </main>
 
-            // Deduct credits
-            if (currentBalance < 1.00) {
-                showToast('Saldo insuficiente para realizar la consulta', 'error');
-                return;
-            }
+  <script>
+    let saldo = 0.00;
+    let consultasCount = 0;
 
-            currentBalance -= 1.00;
-            updateBalanceDisplay();
+    function recargarSaldo() {
+      const monto = prompt("Ingrese el monto a recargar en Soles (S/):", "10");
+      if (monto !== null && !isNaN(monto) && parseFloat(monto) > 0) {
+        saldo += parseFloat(monto);
+        actualizarUI();
+        alert(¡Recarga exitosa! Se han añadido S/ ${parseFloat(monto).toFixed(2)} a tu cuenta.);
+      }
+    }
 
-            // Loading state
-            btn.disabled = true;
-            btn.innerHTML = <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Consultando RENIEC...</span>;
-            lucide.createIcons();
+    function actualizarUI() {
+      document.getElementById('saldo-badge').innerText = S/ ${saldo.toFixed(2)};
+      document.getElementById('card-saldo').innerText = S/ ${saldo.toFixed(2)};
+      document.getElementById('card-consultas').innerText = consultasCount;
+    }
 
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = <i data-lucide="search" class="w-4 h-4"></i><span>Consultar RENIEC</span>;
-                lucide.createIcons();
+    function buscarDNI() {
+      const input = document.getElementById('dni-input');
+      const dni = input.value.trim();
 
-                // Mock Output
-                resultDiv.classList.remove('hidden');
-                resultDiv.innerHTML = `
-                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 animate-fade-in space-y-6">
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <div>
-                                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Resultado Encontrado</span>
-                                <h3 class="text-xl font-bold text-slate-900 mt-2">DNI: ${dni}</h3>
-                            </div>
-                            <button onclick="window.print()" class="px-3 py-1.5 rounded-lg border text-xs font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-1.5">
-                                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir Ficha
-                            </button>
-                        </div>
+      if (dni.length !== 8 || isNaN(dni)) {
+        alert("Por favor ingrese un número de DNI válido de 8 dígitos.");
+        return;
+      }
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Mock Photo -->
-                            <div class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200/60">
-                                <div class="w-32 h-40 bg-slate-200 rounded-lg overflow-hidden border-2 border-white shadow-sm flex items-center justify-center relative">
-                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Foto DNI" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x200/e2e8f0/475569?text=FOTO+RENIEC'">
-                                </div>
-                                <span class="text-[11px] font-semibold text-slate-400 mt-3">Fotografía Digital RENIEC</span>
-                            </div>
+      if (saldo < 1.00) {
+        alert("Saldo insuficiente (Costo S/ 1.00). Haz clic en 'Recargar' para agregar crédito.");
+        return;
+      }
 
-                            <!-- Person Details -->
-                            <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Nombres Completos</span>
-                                    <span class="font-bold text-slate-800 text-sm">MARIA ELENA</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Apellido Paterno</span>
-                                    <span class="font-bold text-slate-800 text-sm">GARCIA</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Apellido Materno</span>
-                                    <span class="font-bold text-slate-800 text-sm">RODRIGUEZ</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Fecha Nacimiento</span>
-                                    <span class="font-bold text-slate-800 text-sm">14/08/1992 (32 años)</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100 sm:col-span-2">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Dirección de Domicilio</span>
-                                    <span class="font-bold text-slate-800 text-sm">AV. JAVIER PRADO ESTE NRO. 2450 INT. 402 - SAN BORJA, LIMA</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Estado Civil</span>
-                                    <span class="font-bold text-slate-800 text-sm">SOLTERO</span>
-                                </div>
-                                <div class="bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                                    <span class="text-slate-400 font-medium block text-[10px] uppercase">Ubigeo</span>
-                                    <span class="font-bold text-slate-800 text-sm">150130 (LIMA - SAN BORJA)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                lucide.createIcons();
-                showToast('Consulta procesada exitosamente', 'success');
-            }, 800);
-        }
+      // Descontar saldo y aumentar consultas
+      saldo -= 1.00;
+      consultasCount++;
+      actualizarUI();
 
-        // Simulate Name Search
-        function handleNameSearch(e) {
-            e.preventDefault();
-            const nom = document.getElementById('searchNombre').value;
-            const pat = document.getElementById('searchPaterno').value;
-            const container = document.getElementById('nameSearchResults');
+      // Mostrar loader
+      document.getElementById('resultado-dni').classList.add('hidden');
+      document.getElementById('loader').classList.remove('hidden');
 
-            container.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-                    <h3 class="text-sm font-bold text-slate-800 mb-4">Resultados coincidentes para "${nom} ${pat}"</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-50 text-slate-400 uppercase font-semibold text-[10px] border-b">
-                                <tr>
-                                    <th class="p-3">DNI</th>
-                                    <th class="p-3">Nombre Completo</th>
-                                    <th class="p-3">F. Nacimiento</th>
-                                    <th class="p-3">Departamento</th>
-                                    <th class="p-3 text-right">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr>
-                                    <td class="p-3 font-mono font-bold text-brand-600">45892104</td>
-                                    <td class="p-3 font-medium text-slate-800">${nom.toUpperCase()} ${pat.toUpperCase()} SANCHEZ</td>
-                                    <td class="p-3">12/03/1988</td>
-                                    <td class="p-3">LIMA</td>
-                                    <td class="p-3 text-right">
-                                        <button onclick="setActiveNav('reniec-online')" class="px-2.5 py-1 bg-slate-900 text-white rounded-lg text-[11px]">Ver RENIEC</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-mono font-bold text-brand-600">71204982</td>
-                                    <td class="p-3 font-medium text-slate-800">${nom.toUpperCase()} ${pat.toUpperCase()} VARGAS</td>
-                                    <td class="p-3">05/11/1995</td>
-                                    <td class="p-3">AREQUIPA</td>
-                                    <td class="p-3 text-right">
-                                        <button onclick="setActiveNav('reniec-online')" class="px-2.5 py-1 bg-slate-900 text-white rounded-lg text-[11px]">Ver RENIEC</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('res-dni').innerText = dni;
+        document.getElementById('resultado-dni').classList.remove('hidden');
+      }, 800);
+    }
 
-        // Simulate Phone Search
-        function handlePhoneSearch(e) {
-            e.preventDefault();
-            const phone = document.getElementById('phoneInput').value;
-            const container = document.getElementById('phoneResult');
+    function switchTab(tabId) {
+      // Ocultar todas las pestañas
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      
+      // Mostrar pestaña seleccionada
+      const target = document.getElementById(tab-${tabId});
+      if (target) target.classList.remove('hidden');
 
-            container.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
-                    <div class="flex items-center justify-between border-b pb-3">
-                        <span class="text-xs font-bold text-emerald-600">Línea Activa</span>
-                        <span class="text-xs font-mono font-bold text-slate-800">+51 ${phone}</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div>
-                            <span class="text-slate-400 block text-[10px]">OPERADOR</span>
-                            <span class="font-bold text-slate-800">CLARO PERU S.A.C.</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-400 block text-[10px]">TIPO PLAN</span>
-                            <span class="font-bold text-slate-800">POSTPAGO CORPORATIVO</span>
-                        </div>
-                        <div class="col-span-2">
-                            <span class="text-slate-400 block text-[10px]">TITULAR REGISTRADO</span>
-                            <span class="font-bold text-slate-800 text-sm">GONZALES PEREZ JUAN CARLOS (DNI: 41829012)</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+      // Actualizar título de cabecera
+      document.getElementById('page-title').innerText = tabId.toUpperCase().replace('-', ' ');
 
-        // Simulate Sentinel Search
-        function handleSentinelSearch(e) {
-            e.preventDefault();
-            const doc = document.getElementById('sentinelDoc').value;
-            const container = document.getElementById('sentinelResult');
+      // Estilos de botones
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-indigo-600', 'bg-indigo-50', 'font-semibold');
+        btn.classList.add('text-gray-600', 'font-medium');
+      });
 
-            container.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
-                    <div class="flex items-center justify-between border-b pb-3">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Score Medio - Riesgo Normal</span>
-                        <span class="text-xs font-mono font-bold text-slate-800">DOC: ${doc}</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div class="p-3 bg-emerald-50 rounded-xl">
-                            <span class="text-[10px] text-emerald-700 font-bold uppercase block">Al Día</span>
-                            <span class="text-lg font-black text-emerald-800">85%</span>
-                        </div>
-                        <div class="p-3 bg-amber-50 rounded-xl">
-                            <span class="text-[10px] text-amber-700 font-bold uppercase block">Deuda Total</span>
-                            <span class="text-lg font-black text-amber-800">S/ 4,250</span>
-                        </div>
-                        <div class="p-3 bg-rose-50 rounded-xl">
-                            <span class="text-[10px] text-rose-700 font-bold uppercase block">Protestos</span>
-                            <span class="text-lg font-black text-rose-800">0</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Recharge balance function
-        function simulateRecharge(amount) {
-            currentBalance += amount;
-            updateBalanceDisplay();
-            showToast(¡Recarga de S/ ${amount}.00 acreditada con éxito!, 'success');
-        }
-
-        function updateBalanceDisplay() {
-            document.getElementById('sidebarBalance').textContent = S/ ${currentBalance.toFixed(2)};
-            const dashBal = document.getElementById('dashBalance');
-            if (dashBal) dashBal.textContent = S/ ${currentBalance.toFixed(2)};
-        }
-    </script>
+      const activeBtn = document.getElementById(btn-${tabId});
+      if (activeBtn) {
+        activeBtn.classList.add('text-indigo-600', 'bg-indigo-50', 'font-semibold');
+        activeBtn.classList.remove('text-gray-600');
+      }
+    }
+  </script>
 </body>
 </html>
